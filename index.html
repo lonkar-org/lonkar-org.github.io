@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lonkar-org</title>
+  <meta name="description" content="Documentation for lonkar-org's open-source projects.">
+  <style>
+    :root { color-scheme: light dark; --fg: #1f2328; --muted: #59636e; --bg: #ffffff; --link: #0969da; }
+    @media (prefers-color-scheme: dark) {
+      :root { --fg: #e6edf3; --muted: #9198a1; --bg: #0d1117; --link: #4493f8; }
+    }
+    body { margin: 0; background: var(--bg); color: var(--fg);
+           font: 1rem/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 42rem; margin: 0 auto; padding: 3rem 1rem; }
+    h1 { font-size: 1.75rem; margin: 0 0 2rem; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    li { padding: 1rem 0; border-top: 1px solid color-mix(in srgb, var(--muted) 30%, transparent); }
+    a { color: var(--link); }
+    .name { font-weight: 600; font-size: 1.125rem; }
+    .what { color: var(--muted); margin: .25rem 0 0; }
+    footer { margin-top: 3rem; color: var(--muted); font-size: .875rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>lonkar-org</h1>
+    <!-- One item per repository with a Pages site; GitHub serves each one
+         here at /<repository>/. -->
+    <ul>
+      <li>
+        <a class="name" href="/tmux-companion/">tmux-companion</a>
+        <p class="what">A companion binary for your tmux: agents list/brief, statusbar segments, project sessions and saved layouts, served by a warm daemon instead of a script per keypress. Rust, macOS and Linux.</p>
+      </li>
+    </ul>
+    <footer><a href="https://github.com/lonkar-org">github.com/lonkar-org</a></footer>
+  </main>
+</body>
+</html>
