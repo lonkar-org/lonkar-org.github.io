@@ -1,0 +1,7 @@
+# Terraform: providers, state, saved plans (they carry backend credentials)
+# and the local secrets file scripts/terraform.sh reads.
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfout
+infra/.env.local

@@ -1,0 +1,68 @@
+name: Infra
+
+# Plans the with-love.lonkar.org record on every push and pull request that
+# touches infra/, and applies it on main. The secrets are the same values
+# lonkar-org/lonkar.org uses; a pull request from a fork gets none, so it
+# stops at fmt and validate rather than planning.
+#
+# Each `uses:` is pinned to a commit SHA with its version in a trailing comment.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "infra/**"
+      - "scripts/terraform.sh"
+      - ".github/workflows/infra.yml"
+  pull_request:
+    paths:
+      - "infra/**"
+      - "scripts/terraform.sh"
+      - ".github/workflows/infra.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: infra
+  cancel-in-progress: false
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    env:
+      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: "~> 1"
+          terraform_wrapper: false
+
+      - name: Format
+        run: terraform fmt -check -recursive infra
+
+      - name: Has secrets
+        id: secrets
+        run: echo "present=${{ secrets.CLOUDFLARE_API_TOKEN != '' }}" >> "$GITHUB_OUTPUT"
+
+      - name: Init
+        if: steps.secrets.outputs.present == 'true'
+        run: scripts/terraform.sh init -input=false
+
+      - name: Validate
+        if: steps.secrets.outputs.present == 'true'
+        run: scripts/terraform.sh validate
+
+      - name: Plan
+        if: steps.secrets.outputs.present == 'true'
+        run: scripts/terraform.sh plan -input=false -out=plan.tfout
+
+      - name: Apply
+        if: steps.secrets.outputs.present == 'true' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: scripts/terraform.sh apply -input=false -auto-approve plan.tfout
