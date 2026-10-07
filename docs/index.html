@@ -16,7 +16,8 @@
     body { margin: 0; background: var(--bg); color: var(--fg);
            font: 1rem/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
     main { max-width: 42rem; margin: 0 auto; padding: 3rem 1rem; }
-    h1 { font-size: 1.75rem; margin: 0 0 2rem; }
+    h1 { font-size: 1.75rem; margin: 0 0 2rem; display: flex; align-items: center; gap: .6rem; }
+    h1 img { width: 2.25rem; height: 2.25rem; }
     ul { list-style: none; padding: 0; margin: 0; }
     li { padding: 1rem 0; border-top: 1px solid color-mix(in srgb, var(--muted) 30%, transparent); }
     a { color: var(--link); }
@@ -27,7 +28,8 @@
 </head>
 <body>
   <main>
-    <h1>lonkar-org</h1>
+    <!-- Decorative: the heading's words already say what it is. -->
+    <h1><img src="/favicon.svg" alt="" width="36" height="36">lonkar-org</h1>
     <!-- One item per repository with a Pages site; GitHub serves each one
          here at /<repository>/. -->
     <ul>
